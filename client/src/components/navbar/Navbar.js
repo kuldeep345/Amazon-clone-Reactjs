@@ -9,7 +9,7 @@ const Navbar = () => {
         <nav>
             <div className="left">
                 <div className="navlogo">
-                    <img src="./logo.png" alt=""/>
+                    <img src="/logo.png" alt=""/>
                 </div>
                 <div className="nav_searchbaar">
                     <input type="text" name="" id=""/>

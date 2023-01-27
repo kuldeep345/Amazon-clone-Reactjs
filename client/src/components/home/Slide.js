@@ -1,11 +1,10 @@
 import { Divider } from '@mui/material'
 import React from 'react'
 import Carousel from 'react-multi-carousel'
-import { products } from './productdata'
-import { Navlink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import './slide.css'
 
-const Slide = ({title}) => {
+const Slide = ({title,products}) => {
 
     const responsive = {
         desktop: {
@@ -14,11 +13,11 @@ const Slide = ({title}) => {
         },
         tablet: {
           breakpoint: { max: 1024, min: 464 },
-          items: 2,
+          items: 3,
         },
         mobile: {
           breakpoint: { max: 464, min: 0 },
-          items: 1,
+          items: 2,
         }
       }
 
@@ -29,7 +28,7 @@ const Slide = ({title}) => {
             <button className='view_btn'>View All</button>
         </div>
         <Divider/>
-        <Carousel
+       {products?.length >0 && <Carousel
         responsive={responsive}
         infinite={true}
         draggable={false}
@@ -45,20 +44,20 @@ const Slide = ({title}) => {
         containerClass="carousel-container"
         >
             {
-              products.map((item , i)=>{
+              products?.map((item , i)=>{
                 return (
-                  <div key={i} className='products_items'>
+                  <NavLink to={`/products/${item._id}`} key={i}><div className='products_items'>
                     <div className="product_img">
                         <img src={item.url} alt="productitem"/>
                     </div>
                     <p className='products_name'>{item.title.shortTitle}</p>
                     <p className='products_offer'>{item.discount}</p>
                     <p className='products_explore'>{item.tagline}</p>
-                  </div>
+                  </div></NavLink>
                 )
               })
             }
-        </Carousel>
+        </Carousel>}
     </div>
   )
 }
