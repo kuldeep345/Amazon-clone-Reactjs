@@ -5,6 +5,7 @@ import {useGetProductQuery} from '../../features/api/crudApi'
 import { useDispatch } from 'react-redux'
 import { increaseCart } from '../../features/slices/userSlice'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const Cart = () => {
 
@@ -28,11 +29,29 @@ const Cart = () => {
 
         if(checkres.status === 401 || !data1){
             console.log("user invalid")
-            alert("user invalid")
+            toast.error('Invalid User', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         }
        
         else{
-            alert("data added in your cart")
+            toast.success('Product added to cart', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
             dispatch(increaseCart(product))
             navigate("/buynow")
         }

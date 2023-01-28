@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch} from 'react-redux'
+import { toast } from 'react-toastify'
 import { decreaseCart } from '../../features/slices/userSlice'
 
 const Option = ({deletedata, get}) => {
@@ -22,6 +23,16 @@ const Option = ({deletedata, get}) => {
     }
     else{
       dispatch(decreaseCart(deletedata))
+      toast.success('Product has been deleted from cart', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
       get()
     }
   }

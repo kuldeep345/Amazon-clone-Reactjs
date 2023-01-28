@@ -20,7 +20,7 @@ const userSlice = createSlice({
     },
     decreaseCart(state ,action){
         state.cart = state.cart.filter((item)=>{
-          return (item._id).toString() != action.payload
+          return (item._id).toString() !== action.payload
         })
     },
   }

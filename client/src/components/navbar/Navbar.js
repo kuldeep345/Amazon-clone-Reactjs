@@ -1,18 +1,33 @@
 import './navbar.css'
 import {Search , ShoppingCart} from '@mui/icons-material'
-import { Avatar, Badge } from '@mui/material'
+import { Avatar, Badge, IconButton , Drawer , Menu , MenuItem} from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCart, setUser } from '../../features/slices/userSlice'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Menu as MenuIcon , Logout } from '@mui/icons-material'
+import Rightheader from './Rightheader'
 
 const Navbar = () => {
 
     const cart = useSelector(state => state.persistedReducer.users.cart.length)
     const user = useSelector(state => state.persistedReducer.users.user)
     const dispatch = useDispatch()
+
+    const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handlerClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handlerClose = () => {
+    setAnchorEl(null);
+  };
+
+    const [ dropen , setDropen ] = useState(false)
+
     const getdetailvaliduser = async()=>{
         const res = await fetch("/user/validUser" , {
             method:"GET",
@@ -38,12 +53,27 @@ const Navbar = () => {
     useEffect(() => {
         getdetailvaliduser()
     }, [])
-    
+
+    const handleClick = async()=>{
+        setDropen(true)
+    }    
+    const handleClose = async()=>{
+        setDropen(false)
+    }    
 
   return (
     <header>
         <nav>
             <div className="left">
+
+            <IconButton className="hamburgur" onClick={handleClick}>
+                <MenuIcon style={{color:"#fff"}}/>
+            </IconButton>
+
+            <Drawer open={dropen} onClose={handleClose}>
+                <Rightheader logClose={handleClose}/>
+            </Drawer>
+
                 <div className="navlogo">
                     <Link to="/"><img src="/logo.png" alt=""/></Link>
                 </div>
@@ -72,8 +102,22 @@ const Navbar = () => {
                 </div>
 
                 {
-                    user ? <Avatar className='avtar2'>{user && user.fName[0].toUpperCase()}</Avatar> : <Avatar className='avtar'/> 
+                    user ? <Avatar className='avtar2' onClick={handlerClick}>{user && user.fName[0].toUpperCase()}</Avatar> : <Avatar className='avtar'/> 
                  }
+
+                <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handlerClose}
+                        MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                      
+                        <MenuItem onClick={handlerClose}>My account</MenuItem>
+                        {user ? <MenuItem onClick={handlerClose}><Logout/>{" "}Logout</MenuItem> : ""}
+                    </Menu>
 
             </div>
         </nav>
