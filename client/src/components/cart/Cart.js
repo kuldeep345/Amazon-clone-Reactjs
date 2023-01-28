@@ -2,12 +2,38 @@ import { Divider } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import './cart.css'
 import {useGetProductQuery} from '../../features/api/crudApi'
+import { useDispatch } from 'react-redux'
+import { increaseCart } from '../../features/slices/userSlice'
 
 const Cart = () => {
 
     const {id} = useParams()
     const { data: product, isFetching, isSuccess } = useGetProductQuery(id)
-    console.log(product)
+    const dispatch = useDispatch()
+    const addToCart = async(id)=>{
+        const checkres = await fetch(`/user/addToCart/${id}`,{
+            method:'POST',
+            headers:{
+                Accept:"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(product),
+            credentails:"include"
+        })
+
+        const data1 = await checkres.json();
+        
+
+        if(checkres.status === 401 || !data1){
+            console.log("user invalid")
+            alert("user invalid")
+        }
+        else{
+            alert("data added in your cart")
+            dispatch(increaseCart(product))
+        }
+
+    }
 
   return (
     <div className='cart_section'>
@@ -15,7 +41,7 @@ const Cart = () => {
                 <div className='left_cart'>
                     <img src={product.url}  alt=""/>
                     <div className="cart_btn">
-                        <button className='cart_btn1'>Add to Cart</button>
+                        <button className='cart_btn1' onClick={()=>addToCart(product._id)}>Add to Cart</button>
                         <button className='cart_btn2'>Buy Now</button>
                     </div>
                 </div>

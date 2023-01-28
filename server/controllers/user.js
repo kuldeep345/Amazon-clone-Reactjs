@@ -1,4 +1,5 @@
 const User = require('../models/userSchema')
+const Product = require('../models/productsSchema')
 const bcrypt = require('bcryptjs')
 
 exports.registerUser = async(req,res)=>{
@@ -73,3 +74,29 @@ exports.loginUser = async(req,res)=>{
         console.log(error)
     }
 }
+
+exports.addToCart = async(req,res)=>{
+    try {
+        
+        const { id } = req.params
+        const cart = await Product.findOne({_id:id})
+      
+        const userContact = await User.findOne({_id:req.userID})
+        
+        if(userContact){
+            const cartProduct = await userContact.addcartdata(cart)
+            await userContact.save()
+            console.log(cartProduct)
+
+            res.status(201).json(userContact)
+        }
+        else{
+            res.status(401).json({error:"invalid user"})
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(401).json({error:"invalid user"})
+    }
+}
+

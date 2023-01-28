@@ -18,7 +18,7 @@ header nav {
     z-index: 4;
 }
 
-.navlogo > img {
+.navlogo > a > img {
     width: 110px;
     margin-top: 10px;
 }

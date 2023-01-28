@@ -1,8 +1,10 @@
 import './signup.css'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useState } from 'react'
-import { useLoginUserMutation } from '../../features/api/crudApi'
+import { setUser , setCart } from '../../features/slices/userSlice'
 import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Signin = () => {
 
@@ -10,6 +12,9 @@ const Signin = () => {
       email:"",
       password:""
     })
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleOnChange = (e)=>{
       setData({
@@ -27,11 +32,13 @@ const Signin = () => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(logdata)
-        });
-
-
-        const data = await res.json();
-        // console.log(data);
+          });
+          
+          
+          const data = await res.json();
+          dispatch(setUser(data))
+          dispatch(setCart(data.carts))
+          navigate("/")
 
         if (res.status === 400 || !data) {
             console.log("invalid details");
@@ -45,6 +52,8 @@ const Signin = () => {
                 progress: undefined,
                 theme: "light",
             });
+
+
         } else {
      
             setData({ ...logdata, email: "", password: "" })
