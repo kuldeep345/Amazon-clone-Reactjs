@@ -4,12 +4,15 @@ import './cart.css'
 import {useGetProductQuery} from '../../features/api/crudApi'
 import { useDispatch } from 'react-redux'
 import { increaseCart } from '../../features/slices/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Cart = () => {
 
     const {id} = useParams()
     const { data: product, isFetching, isSuccess } = useGetProductQuery(id)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const addToCart = async(id)=>{
         const checkres = await fetch(`/user/addToCart/${id}`,{
             method:'POST',
@@ -22,15 +25,16 @@ const Cart = () => {
         })
 
         const data1 = await checkres.json();
-        
 
         if(checkres.status === 401 || !data1){
             console.log("user invalid")
             alert("user invalid")
         }
+       
         else{
             alert("data added in your cart")
             dispatch(increaseCart(product))
+            navigate("/buynow")
         }
 
     }

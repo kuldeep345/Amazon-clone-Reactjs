@@ -61,7 +61,6 @@ exports.loginUser = async(req,res)=>{
             }
             else{
                 res.cookie("Amazonweb" , token, {
-                    expires:new Date(Date.now() + 900000),
                     httpOnly:true
                 }).status(200).json(userLogin)
             }
@@ -86,7 +85,7 @@ exports.addToCart = async(req,res)=>{
         if(userContact){
             const cartProduct = await userContact.addcartdata(cart)
             await userContact.save()
-            console.log(cartProduct)
+       
 
             res.status(201).json(userContact)
         }
@@ -100,3 +99,38 @@ exports.addToCart = async(req,res)=>{
     }
 }
 
+exports.cartDetails = async(req,res)=>{
+    try {
+        const buyuser = await User.findOne({_id:req.userID})
+        res.status(201).json(buyuser)
+    } catch (error) {
+        console.log("error" + error)
+    }
+}
+
+
+exports.validUser = async(req,res)=>{
+    try {
+        const validuserone = await User.findOne({_id:req.userID})
+        res.status(201).json(validuserone)
+    } catch (error) {
+        console.log("error" + error)
+    }
+}
+
+exports.removeFromCart = async(req,res)=>{
+    try {
+        const { id } = req.params
+
+        req.rootUser.carts = req.rootUser.carts.filter((item)=>{
+            return (item._id).toString() != id.toString()
+        })
+        req.rootUser.save()
+        res.status(201).json(req.rootUser)
+        console.log("item remove")
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json("Internal server error")
+    }
+}

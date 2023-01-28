@@ -17,10 +17,15 @@ const userSlice = createSlice({
     },
     increaseCart(state ,action){
         state.cart.push(action.payload)   
-    }
+    },
+    decreaseCart(state ,action){
+        state.cart = state.cart.filter((item)=>{
+          return (item._id).toString() != action.payload
+        })
+    },
   }
 })
 
-export const { setUser , setCart , increaseCart} = userSlice.actions
+export const { setUser , setCart , increaseCart , decreaseCart} = userSlice.actions
 
 export default userSlice.reducer
