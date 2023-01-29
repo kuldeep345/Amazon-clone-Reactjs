@@ -62,15 +62,15 @@ exports.loginUser = async(req,res)=>{
             else{
                 res.cookie("Amazonweb" , token, {
                     httpOnly:true
-                }).status(200).json(userLogin)
+                }).status(200).json({userLogin , token })
             }
         }
         else{
             res.status(400).json("Invalid credentials")
         }
     } catch (error) {
-        res.status(500).json("Internal server error")
         console.log(error)
+        res.status(500).json("Interval server error")
     }
 }
 
@@ -132,5 +132,21 @@ exports.removeFromCart = async(req,res)=>{
     } catch (error) {
         console.log(error)
         res.status(400).json("Internal server error")
+    }
+}
+
+exports.Logout = async(req,res)=>{
+    try {
+        req.rootUser.tokens = req.rootUser.tokens.filter((curelem)=>{
+            return curelem.token !== req.token
+        })
+
+        res.clearCookie("Amazonweb" , {path:"/"})
+        req.rootUser.save()
+        res.status(201).json(req.rootUser.tokens)
+        console.log("user logout")
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
     }
 }

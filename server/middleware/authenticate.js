@@ -5,7 +5,9 @@ const secretKey = process.env.KEY
 const authenticate = async(req,res,next)=>{
     try {
         const token = req.cookies.Amazonweb;
-        console.log(token)
+        if(!token){
+            return res.status(400).json("unauthorized user")
+        }
         const verifyToken = jwt.verify(token , secretKey)
  
 

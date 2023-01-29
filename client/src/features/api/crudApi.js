@@ -2,7 +2,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const crupApi = createApi({
     reducerPath: 'api',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000' }),
+    mode: "cors",
+    baseQuery: fetchBaseQuery({ 
+      baseUrl: 'http://localhost:5000'
+  }),
     endpoints: builder => ({
       getProducts: builder.query({
         query: () => '/products'
@@ -17,15 +20,15 @@ export const crupApi = createApi({
           body: details
         })
       }),
-      loginUser:builder.mutation({
-        query:details=>({
-          url:'/user/login',
+      addtoCart:builder.mutation({
+        query:(id , product )=>({
+          url:`/user/addToCart/${id}`,
           method:"POST",
-          body:details
+          body:product
         })
       })
     })
   })
   
 
-  export const { useGetProductsQuery , useGetProductQuery , useAddNewUserMutation , useLoginUserMutation } = crupApi
+  export const { useGetProductsQuery , useGetProductQuery , useAddNewUserMutation , useAddtoCartMutation } = crupApi

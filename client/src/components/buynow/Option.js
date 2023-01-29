@@ -5,7 +5,7 @@ import { decreaseCart } from '../../features/slices/userSlice'
 
 const Option = ({deletedata, get}) => {
   const dispatch = useDispatch()
-  const removedata = async(req , res)=>{
+  const removedata = async()=>{
     const resdata = await fetch(`/user/remove/${deletedata}`,{
       method:"DELETE",
       headers:{

@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
  user:null,
- cart:[]
+ cart:[],
+ token:null
 }
 
 const userSlice = createSlice({
@@ -23,9 +24,15 @@ const userSlice = createSlice({
           return (item._id).toString() !== action.payload
         })
     },
+    logout(state,action){
+      state.user = null
+    },
+    setToken(state,action){
+      state.token= action.payload
+    }
   }
 })
 
-export const { setUser , setCart , increaseCart , decreaseCart} = userSlice.actions
+export const { setUser , setCart , increaseCart , decreaseCart , logout , setToken} = userSlice.actions
 
 export default userSlice.reducer

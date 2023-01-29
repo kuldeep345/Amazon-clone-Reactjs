@@ -1,7 +1,7 @@
 import './signup.css'
 import { Link, Navigate } from 'react-router-dom'
 import { useState } from 'react'
-import { setUser , setCart } from '../../features/slices/userSlice'
+import { setUser , setCart , setToken } from '../../features/slices/userSlice'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -36,12 +36,9 @@ const Signin = () => {
           
           
           const data = await res.json();
-          dispatch(setUser(data))
-          dispatch(setCart(data.carts))
-          navigate("/")
-
-        if (res.status === 400 || !data) {
-            console.log("invalid details");
+        
+        if (res.status === 400) {
+         
             toast.error("Invalid Details!", {
                 position: "top-center",
                 autoClose: 3000,
@@ -52,10 +49,23 @@ const Signin = () => {
                 progress: undefined,
                 theme: "light",
             });
-
-
+        } else if(res.status === 500){
+          toast.error("Internal server error", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
         } else {
-     
+          dispatch(setUser(data.userLogin))
+          dispatch(setCart(data.userLogin.carts))
+          dispatch(setToken(data.token))
+          navigate("/")
+
             setData({ ...logdata, email: "", password: "" })
             toast.success("Login Successfully done", {
                 position: "top-center",

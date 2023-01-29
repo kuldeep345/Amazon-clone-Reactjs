@@ -11,12 +11,13 @@ import Cart from './components/cart/Cart';
 import BuyNow from './components/buynow/BuyNow';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useSelector } from 'react-redux';
 
 function App() {
 
+  
   return (
-    <Router>
+      <Router>
       <Navbar/>
       <NewNav/>
       <ToastContainer/>
@@ -29,7 +30,7 @@ function App() {
         </Routes>
       <Footer/>
     </Router>
-  );
+  )
 }
 
 export default App;

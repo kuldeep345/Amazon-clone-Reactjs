@@ -63,7 +63,10 @@ const BuyNow = () => {
             </div>
             <Right cartItems={cartdata.carts} />
         </div>
-    </div> : ""}
+    </div> : <div style={{height:"80vh"}}>
+                <h3>No items in cart</h3>
+        </div>
+        }
     </>
   )
 }

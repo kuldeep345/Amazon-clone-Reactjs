@@ -5,6 +5,7 @@ import Slide from './Slide'
 import { useGetProductsQuery } from '../../features/api/crudApi'
 import { setProducts } from '../../features/slices/productSlice'
 import { useDispatch } from 'react-redux'
+import { CircularProgress } from '@mui/material'
 
 const MainComp = () => {
 
@@ -15,11 +16,14 @@ const MainComp = () => {
         dispatch(setProducts(products))
     }, [isSuccess])
     
-   
+   console.log(products)
          
 
-  return (
-    <div className="home_section">
+  return isLoading ? <div className='circle'>
+    <CircularProgress/>
+    <h2>Loading...</h2>
+  </div> : 
+    <><div className="home_section">
         <div className="banner_part">
             <Banner/>
         </div>
@@ -40,8 +44,8 @@ const MainComp = () => {
         <Slide title="Best Seller" products={products}/>
         <Slide title="Upto 80% off" products={products}/>
        
-    </div>
-  )
+    </div></>
+
 }
 
 export default MainComp

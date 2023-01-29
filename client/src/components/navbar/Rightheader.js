@@ -1,7 +1,8 @@
 import './rightheader.css'
 import { useSelector } from 'react-redux'
 import { Avatar, Divider } from '@mui/material'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+import { Logout } from '@mui/icons-material'
 
 const Rightheader = ({logClose}) => {
 
@@ -30,6 +31,11 @@ const Rightheader = ({logClose}) => {
             <NavLink to="/">Settings</NavLink>
             <img src="" alt="" />
            </div>
+
+           {
+            user ? <div className="nav_btn" style={{flexDirection:"row"}}><Logout/><span>Logout</span></div> :  <div className="nav_btn">
+            <Link to="/login"><span>signin</span></Link></div>
+           }
        
         </div>
     </div>
